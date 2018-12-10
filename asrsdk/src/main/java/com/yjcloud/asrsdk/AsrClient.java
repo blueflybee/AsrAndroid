@@ -163,7 +163,7 @@ public class AsrClient {
       AsrSdkResponse response = new AsrSdkResponse();
       response.setStatus_code(AsrSdkResponse.STATUS_CODE_500);
       this.listener.onOperationFailed(response);
-      LOG.error(e.getMessage(), e);
+      e.printStackTrace();
       return;
     }
     if (successful) {

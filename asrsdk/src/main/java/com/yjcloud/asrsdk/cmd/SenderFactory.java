@@ -68,7 +68,7 @@ public class SenderFactory {
     //补齐协议
     byteBuf.writeShort(0);
     byteBuf.writeBytes(msgBuf);
-    Log.i(TAG, ("sendStartCmd to server......");
+    Log.i(TAG, "sendStartCmd to server......");
     // send ByteBuf message to collector
     Channel ch = client.getCh();
     ch.writeAndFlush(byteBuf);
@@ -95,7 +95,7 @@ public class SenderFactory {
     //补齐协议
     byteBuf.writeShort(0);
     byteBuf.writeBytes(msgBuf);
-    Log.i(TAG, ("sendStopCmd to server......");
+    Log.i(TAG, "sendStopCmd to server......");
     // send ByteBuf message to collector
     Channel ch = client.getCh();
     ch.writeAndFlush(byteBuf);
@@ -143,7 +143,7 @@ public class SenderFactory {
     //补齐协议
     byteBuf.writeShort(0);
     byteBuf.writeBytes(bytes);
-    Log.i(TAG, ("sendPing to server......");
+    Log.i(TAG, "sendPing to server......");
     Channel ch = client.getCh();
     ch.writeAndFlush(byteBuf);
   }
