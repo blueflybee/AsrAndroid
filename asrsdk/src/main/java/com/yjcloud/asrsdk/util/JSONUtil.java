@@ -83,7 +83,7 @@ public class JSONUtil {
   /**
    * @Title obj2str
    * 对象转换为json字符串，obj2json等价方法
-   * @see com.yjcloud.utils.JSONUtil.obj2json(<T>)
+//   * @see com.yjcloud.asrsdk.util.JSONUtil.(<T>)
    */
   public static <T> String obj2str(T entity) {
     return obj2json(entity);
