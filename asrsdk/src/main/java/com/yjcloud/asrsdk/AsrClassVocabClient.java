@@ -1,19 +1,19 @@
 package com.yjcloud.asrsdk;
 
+import android.util.Log;
+
+import com.yjcloud.asrsdk.util.HttpCaller;
+import com.yjcloud.asrsdk.util.JSONUtil;
+import com.yjcloud.asrsdk.util.UrlConcatUtils;
+import com.yjcloud.asrsdk.vo.ResultInfoVO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
-
-import com.yjcloud.asr.sdk.util.HttpCaller;
-import com.yjcloud.asr.sdk.util.JSONUtil;
-import com.yjcloud.asr.sdk.util.UrlConcatUtils;
-import com.yjcloud.asr.sdk.vo.ResultInfoVO;
 
 /**
  * 类热词操作客户端
@@ -22,8 +22,7 @@ import com.yjcloud.asr.sdk.vo.ResultInfoVO;
  */
 public class AsrClassVocabClient {
 
-	protected final Log LOG = LogFactory.getLog(getClass());
-	
+	private final String TAG = getClass().getSimpleName();
 	private HttpCaller httpCaller;
 	
 	private static final String CVOCAB_ID_PREFIX = "C_";
@@ -57,9 +56,9 @@ public class AsrClassVocabClient {
 	 * @return
 	 * @throws Exception
 	 */
-	public ResultInfoVO createClassVocab(List<String> personVocabs,List<String> placeVocabs) throws Exception{
+	public ResultInfoVO createClassVocab(List<String> personVocabs, List<String> placeVocabs) throws Exception{
 		String id = new18uid();
-		return createOrModify(id,personVocabs,placeVocabs,UrlConcatUtils.concat(classUrl,CREATE_URL_SUFFIX));
+		return createOrModify(id,personVocabs,placeVocabs, UrlConcatUtils.concat(classUrl,CREATE_URL_SUFFIX));
 	}
 	
 	/**
@@ -75,9 +74,7 @@ public class AsrClassVocabClient {
 	}
 	
 	private ResultInfoVO createOrModify(String id,List<String> personVocabs,List<String> placeVocabs,String url) throws Exception{
-		if(LOG.isDebugEnabled()){
-			LOG.debug("模型服务地址为:"+url);
-		}
+		Log.d(TAG, "模型服务地址为:" + url);
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
 		param.put("personVocabs", personVocabs);

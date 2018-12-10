@@ -4,7 +4,7 @@ public class UrlConcatUtils {
 
 	/**
 	 * 
-	 * @param root
+	 * @param url
 	 * @param other
 	 * @return
 	 */

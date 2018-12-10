@@ -1,6 +1,7 @@
 package com.yjcloud.asrsdk.event;
 
-import com.yjcloud.asr.sdk.protocol.AsrSdkResponse;
+import com.yjcloud.asrsdk.protocol.AsrSdkResponse;
+
 /**
  * 调用SDK回调抽象接口
  * @author wangjq

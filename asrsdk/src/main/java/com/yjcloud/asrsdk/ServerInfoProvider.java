@@ -1,16 +1,16 @@
 package com.yjcloud.asrsdk;
 
+import android.util.Log;
+
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
 
-import com.yjcloud.asr.sdk.util.Configuration;
-import com.yjcloud.asr.sdk.util.JSONUtil;
+import com.yjcloud.asrsdk.util.Configuration;
+import com.yjcloud.asrsdk.util.JSONUtil;
 import com.yjcloud.open.Client;
 import com.yjcloud.open.Request;
 import com.yjcloud.open.constant.ContentType;
@@ -23,8 +23,7 @@ import com.yjcloud.open.constant.HttpHeader;
  */
 public class ServerInfoProvider {
 
-	protected static final Log LOG = LogFactory.getLog(ServerInfoProvider.class);
-	
+	private final String TAG = getClass().getSimpleName();
 	/**
 	 * 通过open_sdk鉴权并获取服务节点信息
 	 * @param accesskeyId

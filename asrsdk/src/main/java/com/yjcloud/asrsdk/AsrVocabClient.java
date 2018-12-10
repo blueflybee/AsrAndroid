@@ -1,19 +1,19 @@
 package com.yjcloud.asrsdk;
 
+import android.util.Log;
+
+import com.yjcloud.asrsdk.util.HttpCaller;
+import com.yjcloud.asrsdk.util.JSONUtil;
+import com.yjcloud.asrsdk.util.UrlConcatUtils;
+import com.yjcloud.asrsdk.vo.ResultInfoVO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
 import org.apache.http.util.EntityUtils;
-
-import com.yjcloud.asr.sdk.util.HttpCaller;
-import com.yjcloud.asr.sdk.util.JSONUtil;
-import com.yjcloud.asr.sdk.util.UrlConcatUtils;
-import com.yjcloud.asr.sdk.vo.ResultInfoVO;
 
 /**
  * 泛热词操作客户端
@@ -22,7 +22,7 @@ import com.yjcloud.asr.sdk.vo.ResultInfoVO;
  */
 public class AsrVocabClient {
 
-	protected final Log LOG = LogFactory.getLog(getClass());
+	private final String TAG = getClass().getSimpleName();
 	
 	private HttpCaller httpCaller;
 	
@@ -41,7 +41,7 @@ public class AsrVocabClient {
 	/**
 	 * 
 	 * @param host 服务地址
-	 * @param modelUrl 泛热词服务URL
+	 * @param vocabUrl 泛热词服务URL
 	 * @param accesskeyId 
 	 * @param accessKeySecret
 	 */
@@ -58,7 +58,7 @@ public class AsrVocabClient {
 	 */
 	public ResultInfoVO createVocab(List<String> words) throws Exception{
 		String id = new18uid();
-		return createOrModify(id,words,UrlConcatUtils.concat(vocabUrl,CREATE_URL_SUFFIX));
+		return createOrModify(id,words, UrlConcatUtils.concat(vocabUrl,CREATE_URL_SUFFIX));
 	}
 	
 	/**
@@ -73,9 +73,7 @@ public class AsrVocabClient {
 	}
 	
 	private ResultInfoVO createOrModify(String id,List<String> words,String url) throws Exception{
-		if(LOG.isDebugEnabled()){
-			LOG.debug("泛热词服务地址为:"+url);
-		}
+		Log.d(TAG, "泛热词服务地址为:" + url);
 		Map<String, Object> param = new HashMap<>();
 		param.put("id", id);
 		param.put("words", words);
