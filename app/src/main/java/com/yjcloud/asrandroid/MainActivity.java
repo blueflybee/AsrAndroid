@@ -43,8 +43,8 @@ public class MainActivity extends AppCompatActivity {
         //V_b3a8639f6694a0fe
         //C_ba9483e0d640ef98
         //M_9d58deed730b3e46
-        demo.init("V_b3a8639f6694a0fe", "C_ba9483e0d640ef98", "M_9d58deed730b3e46");
-//        demo.init(vocabId, classVocabId, modelId);
+//        demo.init("V_b3a8639f6694a0fe", "C_ba9483e0d640ef98", "M_9d58deed730b3e46");
+        demo.init(null, null, null);
 
         //开始
         demo.start();
