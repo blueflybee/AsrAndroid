@@ -69,6 +69,8 @@ public class AsrSdkControlHandler extends ChannelInboundHandlerAdapter {
 
         AsrSdkResponse response = new AsrSdkResponse();
         response.loadFromMap(map);
+        System.out.println("listener = " + listener);
+        System.out.println("response = " + response);
         listener.onMessageReceived(response);
       }
       /**

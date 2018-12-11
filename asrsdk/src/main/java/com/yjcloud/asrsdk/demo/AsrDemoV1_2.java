@@ -74,7 +74,7 @@ public class AsrDemoV1_2 implements AsrListener {
 
   @Override
   public void onMessageReceived(AsrSdkResponse response) {
-    Log.i(TAG, response.getResult().getText());
+    Log.i(TAG, response.toString());
     int cno = response.getCno();
     Log.i(TAG, "通道 ：" + cno + "的识别结果为:" + response.getResult().getText());
 
@@ -159,17 +159,20 @@ public class AsrDemoV1_2 implements AsrListener {
     byte[] b = new byte[8000];
     int len = 0;
     try {
-//      fis = new FileInputStream(new File("E:\\asr\\test123.wav"));
+
+//      fis = new FileInputStream(new File("/home/shaojun/WorkSpaces/AndroidWorkspaces/OtherWork/AsrAndroid/asrsdk/audio/test.wav"));
       fis = context.getResources().openRawResource(R.raw.test);
     } catch (Exception e) {
       e.printStackTrace();
     }
+    System.out.println("fis = " + fis);
     if (fis != null) {
       List<byte[]> voice = new ArrayList<>();
       /**
        * 多通道，list中放入多个音频byte数组
        */
       while ((len = fis.read(b)) > 0) {
+        System.out.println("len = " + len);
         voice.clear();
         voice.add(b);
         client.sendVoice(voice);

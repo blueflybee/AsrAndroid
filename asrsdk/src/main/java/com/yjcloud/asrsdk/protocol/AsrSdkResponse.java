@@ -158,7 +158,26 @@ public class AsrSdkResponse {
     public int getStatus_code() {
       return this.status_code;
     }
+
+    @Override
+    public String toString() {
+      return "Result{" +
+          "status_code=" + status_code +
+          ", begin_time=" + begin_time +
+          ", end_time=" + end_time +
+          ", sentence_id=" + sentence_id +
+          ", text='" + text + '\'' +
+          '}';
+    }
   }
 
-
+  @Override
+  public String toString() {
+    return "AsrSdkResponse{" +
+        "status_code=" + status_code +
+        ", error_msg='" + error_msg + '\'' +
+        ", cno=" + cno +
+        ", result=" + result +
+        '}';
+  }
 }
