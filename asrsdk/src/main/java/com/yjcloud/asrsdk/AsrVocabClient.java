@@ -2,6 +2,7 @@ package com.yjcloud.asrsdk;
 
 import android.util.Log;
 
+import com.yjcloud.asrsdk.protocol.HttpResponse;
 import com.yjcloud.asrsdk.util.HttpCaller;
 import com.yjcloud.asrsdk.util.JSONUtil;
 import com.yjcloud.asrsdk.util.UrlConcatUtils;
@@ -11,9 +12,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 
 /**
  * 泛热词操作客户端
@@ -75,9 +73,9 @@ public class AsrVocabClient {
     param.put("id", id);
     param.put("words", words);
     String body = JSONUtil.obj2json(param);
-    HttpResponse httpResp = httpCaller.sendPost(url, body);
-    if (httpResp.getStatusLine().getStatusCode() == 200) {
-      String json = EntityUtils.toString(httpResp.getEntity());
+    HttpResponse response = httpCaller.sendPost(url, body);
+    if (response.getCode() == 200) {
+      String json = response.getMsg();
       ResultInfoVO rs = JSONUtil.json2obj(json, ResultInfoVO.class);
       if (rs.isOK()) {
         rs.setId(id);

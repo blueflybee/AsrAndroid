@@ -98,7 +98,7 @@ public class AsrClient {
     Map<String, Object> socketInfo;
     try {
       this.listener = listener;
-      socketInfo = ServerInfoProvider.getsocketInfoWithAuth(accesskeyId, accessKeySecret);
+      socketInfo = ServerInfoProvider.getSocketInfoWithAuth(accesskeyId, accessKeySecret);
       this.chcnt = chcnt;
       String hostPort = (String) socketInfo.get("collector");
       try {

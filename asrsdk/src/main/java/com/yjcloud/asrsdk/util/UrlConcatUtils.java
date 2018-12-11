@@ -1,5 +1,11 @@
 package com.yjcloud.asrsdk.util;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.Map;
+
+import io.netty.util.internal.StringUtil;
+
 public class UrlConcatUtils {
 
   /**
@@ -14,5 +20,36 @@ public class UrlConcatUtils {
       url = url + "/" + other;
     }
     return url;
+  }
+
+  public static String formatUrl(String host, String path, Map<String, String> querys)
+      throws UnsupportedEncodingException {
+    StringBuilder sbUrl = new StringBuilder();
+    sbUrl.append(host);
+    if (!StringUtil.isNullOrEmpty(path)) {
+      sbUrl.append(path);
+    }
+    if (null != querys) {
+      StringBuilder sbQuery = new StringBuilder();
+      for (Map.Entry<String, String> query : querys.entrySet()) {
+        if (0 < sbQuery.length()) {
+          sbQuery.append("&");
+        }
+        if ((StringUtil.isNullOrEmpty((String) query.getKey())) && (!StringUtil.isNullOrEmpty((String) query.getValue()))) {
+          sbQuery.append((String) query.getValue());
+        }
+        if (!StringUtil.isNullOrEmpty((String) query.getKey())) {
+          sbQuery.append((String) query.getKey());
+          if (!StringUtil.isNullOrEmpty((String) query.getValue())) {
+            sbQuery.append("=");
+            sbQuery.append(URLEncoder.encode((String) query.getValue(), "UTF-8"));
+          }
+        }
+      }
+      if (0 < sbQuery.length()) {
+        sbUrl.append("?").append(sbQuery);
+      }
+    }
+    return sbUrl.toString();
   }
 }

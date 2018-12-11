@@ -2,6 +2,7 @@ package com.yjcloud.asrsdk;
 
 import android.util.Log;
 
+import com.yjcloud.asrsdk.protocol.HttpResponse;
 import com.yjcloud.asrsdk.util.HttpCaller;
 import com.yjcloud.asrsdk.util.JSONUtil;
 import com.yjcloud.asrsdk.util.UrlConcatUtils;
@@ -10,9 +11,6 @@ import com.yjcloud.asrsdk.vo.ResultInfoVO;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-
-import org.apache.http.HttpResponse;
-import org.apache.http.util.EntityUtils;
 
 /**
  * 泛热词操作客户端
@@ -86,9 +84,9 @@ public class AsrModelClient {
     param.put("id", id);
     param.put("text", text);
     String body = JSONUtil.obj2json(param);
-    HttpResponse httpResp = httpCaller.sendPost(url, body);
-    if (httpResp.getStatusLine().getStatusCode() == 200) {
-      String json = EntityUtils.toString(httpResp.getEntity());
+    HttpResponse response = httpCaller.sendPost(url, body);
+    if (response.getCode() == 200) {
+      String json = response.getMsg();
       ResultInfoVO rs = JSONUtil.json2obj(json, ResultInfoVO.class);
       if (rs.isOK()) {
         rs.setId(id);
@@ -109,9 +107,9 @@ public class AsrModelClient {
     String url = UrlConcatUtils.concat(infoUrl, modelId);
     Log.d(TAG, "模型服务地址为:" + url);
     //查询的content-type 为 application/json
-    HttpResponse httpResp = httpCaller.sendPost(url, null);
-    if (httpResp.getStatusLine().getStatusCode() == 200) {
-      String json = EntityUtils.toString(httpResp.getEntity());
+    HttpResponse response = httpCaller.sendPost(url, null);
+    if (response.getCode() == 200) {
+      String json = response.getMsg();
       ResultInfoVO rs = JSONUtil.json2obj(json, ResultInfoVO.class);
       return rs;
     } else {
