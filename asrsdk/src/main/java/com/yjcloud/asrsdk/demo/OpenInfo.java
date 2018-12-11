@@ -3,7 +3,7 @@ package com.yjcloud.asrsdk.demo;
 
 public class OpenInfo {
 
-	public static String host = "http://121.40.253.20:8080/asr_sdk_server/api/v1/";
+	public static String host = "http://121.40.253.20:8080/asr-sdk-server/api/v1/";
 	
 	public static String ak_id = "8d01903b580586ae";
 	

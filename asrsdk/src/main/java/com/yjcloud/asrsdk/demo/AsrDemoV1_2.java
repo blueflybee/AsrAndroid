@@ -1,25 +1,26 @@
 package com.yjcloud.asrsdk.demo;
 
 
+import android.content.Context;
 import android.util.Log;
 
 import com.yjcloud.asrsdk.AsrClassVocabClient;
 import com.yjcloud.asrsdk.AsrClient;
 import com.yjcloud.asrsdk.AsrModelClient;
 import com.yjcloud.asrsdk.AsrVocabClient;
+import com.yjcloud.asrsdk.R;
 import com.yjcloud.asrsdk.event.AsrListener;
 import com.yjcloud.asrsdk.protocol.AsrSdkResponse;
 import com.yjcloud.asrsdk.vo.ResultInfoVO;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.LineUnavailableException;
-import javax.sound.sampled.TargetDataLine;
 
 /**
  * v1.2 测试用例
@@ -32,15 +33,15 @@ public class AsrDemoV1_2 implements AsrListener {
   /**
    * 泛热词sdkClient,具备调用泛热词的创建以及修改功能
    */
-  private static AsrVocabClient vocabClient = new AsrVocabClient(OpenInfo.host, OpenInfo.vocab_path, OpenInfo.ak_id, OpenInfo.ak_secret);
+  private AsrVocabClient vocabClient = new AsrVocabClient(OpenInfo.host, OpenInfo.vocab_path, OpenInfo.ak_id, OpenInfo.ak_secret);
   /**
    * 类热词sdkClient,具备调用类热词的创建以及修改功能
    */
-  private static AsrClassVocabClient classVocabClient = new AsrClassVocabClient(OpenInfo.host, OpenInfo.cvocab_path, OpenInfo.ak_id, OpenInfo.ak_secret);
+  private AsrClassVocabClient classVocabClient = new AsrClassVocabClient(OpenInfo.host, OpenInfo.cvocab_path, OpenInfo.ak_id, OpenInfo.ak_secret);
   /**
    * 定制模型sdkClient,具备调用定制模型的创建，修改以及模型学习状态查询的功能
    */
-  private static AsrModelClient modelClient = new AsrModelClient(OpenInfo.host, OpenInfo.model_path, OpenInfo.ak_id, OpenInfo.ak_secret);
+  private AsrModelClient modelClient = new AsrModelClient(OpenInfo.host, OpenInfo.model_path, OpenInfo.ak_id, OpenInfo.ak_secret);
   /**
    * 语音识别SDK client 负责发送音频，回传识别结果
    */
@@ -52,12 +53,9 @@ public class AsrDemoV1_2 implements AsrListener {
   int chcnt = 1;
 
   boolean flag = false;
-  private static AsrDemoV1_2 demo = new AsrDemoV1_2();
+//  private AsrDemoV1_2 demo = new AsrDemoV1_2();
   private final String TAG = getClass().getSimpleName();
-  /**
-   * 电脑内置麦克的音频采集任务
-   */
-  private LineAudioTask lineAudioTask = new LineAudioTask();
+
 
   /**
    * 采集客户端初始化，需要提前生成好，泛热词，类热词，模型的唯一标识
@@ -76,7 +74,6 @@ public class AsrDemoV1_2 implements AsrListener {
 
   @Override
   public void onMessageReceived(AsrSdkResponse response) {
-    // TODO: 18-12-10  response
     Log.i(TAG, response.getResult().getText());
     int cno = response.getCno();
     Log.i(TAG, "通道 ：" + cno + "的识别结果为:" + response.getResult().getText());
@@ -104,28 +101,28 @@ public class AsrDemoV1_2 implements AsrListener {
       Log.i(TAG, "stop is success");
     } else if (3 == operationType) {
       Log.i(TAG, "finish is success");
-      demo.shutDown();
+      shutDown();
     }
   }
 
   public static void main(String[] args) throws Exception {
 
-    String vocabId = generateVocabId();
-    String classVocabId = generateCVocabId();
-    String modelId = generateModelId();
-
-    //初始化,并传入热词以及模型
-    demo.init(vocabId, classVocabId, modelId);
-
-    //开始
-    demo.start();
-
-    //开始发送音频
-    demo.process();
-
-    while (true) {
-      Thread.sleep(10);
-    }
+//    String vocabId = generateVocabId();
+//    String classVocabId = generateCVocabId();
+//    String modelId = generateModelId();
+//
+//    //初始化,并传入热词以及模型
+//    demo.init(vocabId, classVocabId, modelId);
+//
+//    //开始
+//    demo.start();
+//
+//    //开始发送音频
+//    demo.process(null);
+//
+//    while (true) {
+//      Thread.sleep(10);
+//    }
 
   }
 
@@ -143,10 +140,42 @@ public class AsrDemoV1_2 implements AsrListener {
    * @throws IOException
    * @throws InterruptedException
    */
-  public void process() throws IOException, InterruptedException {
+  public void process(Context context) throws IOException, InterruptedException {
+    //检测是否启动成功
+    while (true) {
+      if (flag) {
+        Log.i(TAG, "start success......");
+        break;
 
-    // 发送麦克风音频
-    lineAudioTask.start();
+      } else {
+        Log.i(TAG, "waiting for start success ack......");
+        Thread.sleep(50L);
+      }
+    }
+
+    Log.i(TAG, "open audio file...");
+    InputStream fis = null;
+    // while(true){
+    byte[] b = new byte[8000];
+    int len = 0;
+    try {
+//      fis = new FileInputStream(new File("E:\\asr\\test123.wav"));
+      fis = context.getResources().openRawResource(R.raw.test);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    if (fis != null) {
+      List<byte[]> voice = new ArrayList<>();
+      /**
+       * 多通道，list中放入多个音频byte数组
+       */
+      while ((len = fis.read(b)) > 0) {
+        voice.clear();
+        voice.add(b);
+        client.sendVoice(voice);
+        Thread.sleep(250L);
+      }
+    }
 
   }
 
@@ -166,7 +195,7 @@ public class AsrDemoV1_2 implements AsrListener {
    * @return modeld
    * @throws Exception
    */
-  private static String generateModelId() throws Exception {
+  public String generateModelId() throws Exception {
     // 此处可根据实际的业务获取
     String text = "购房者应当向征信管理部门查询本人的信用报告，确认能否贷款。该条件是个人购房贷款的基础，如果一个人有过不良的信用记录，如逾期不归还信用卡欠款等，且不良记录超过银行相关规定的话，不管其他条件如何，都无法获得贷款。";
     ResultInfoVO rs = modelClient.createModel(text);
@@ -180,7 +209,7 @@ public class AsrDemoV1_2 implements AsrListener {
    * @return classVocabId
    * @throws Exception
    */
-  private static String generateCVocabId() throws Exception {
+  public String generateCVocabId() throws Exception {
     // 生成类热词
     String[] personArr = {"王白怀"};
     List<String> personVocabs = Arrays.asList(personArr);
@@ -197,7 +226,7 @@ public class AsrDemoV1_2 implements AsrListener {
    * @return vocabId
    * @throws Exception
    */
-  private static String generateVocabId() throws Exception {
+  public String generateVocabId() throws Exception {
     // 生成泛热词
     String[] wordArr = {"香蕉", "苹果", "栗子"};
     List<String> words = Arrays.asList(wordArr);
@@ -206,71 +235,5 @@ public class AsrDemoV1_2 implements AsrListener {
     return id;
   }
 
-  /**
-   * 电脑内置麦克采集任务，仅供参考
-   *
-   * @author wangjq
-   */
-  class LineAudioTask implements Runnable {
 
-    public AudioFormat.Encoding encoding = AudioFormat.Encoding.PCM_SIGNED;
-
-    public AudioFormat format = new AudioFormat(encoding,
-        16000.0f, 16,
-        1, 1 * 16 / 8, 16000.0f, false);
-
-    private final AudioFormat af = format;
-
-    private TargetDataLine tdl;
-
-    private Thread thread;
-
-    public LineAudioTask() {
-      try {
-        this.tdl = AudioSystem.getTargetDataLine(af);
-      } catch (LineUnavailableException e) {
-        e.printStackTrace();
-      }
-    }
-
-    @Override
-    public void run() {
-      try {
-        tdl.open(af);
-      } catch (Exception e) {
-      }
-
-      // 如果线路已经在运行则此方法不执行任何操作
-      tdl.start();
-
-      int captureBufSize = 8000;
-      byte[] captureBuf = new byte[captureBufSize];
-
-      while (!Thread.currentThread().isInterrupted()) {
-        tdl.read(captureBuf, 0, captureBufSize);
-        this.sendAudio(captureBuf);
-        int available = tdl.available();
-        if (available <= 0) {
-          try {
-            Thread.sleep(250);
-          } catch (InterruptedException e) {
-          }
-          continue;
-        }
-      }
-    }
-
-    public void start() {
-      thread = new Thread(this);
-      thread.start();
-    }
-
-    private void sendAudio(byte[] audio) {
-      List<byte[]> voice = new ArrayList<>();
-
-      voice.clear();
-      voice.add(audio);
-      client.sendVoice(voice);
-    }
-  }
 }

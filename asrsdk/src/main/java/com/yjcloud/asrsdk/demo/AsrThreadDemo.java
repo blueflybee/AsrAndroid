@@ -113,11 +113,11 @@ public class AsrThreadDemo implements AsrListener, Runnable {
     private Thread thread;
 
     public LineAudioTask() {
-      try {
-        this.tdl = AudioSystem.getTargetDataLine(af);
-      } catch (LineUnavailableException e) {
-        e.printStackTrace();
-      }
+//      try {
+////        this.tdl = AudioSystem.getTargetDataLine(af);
+//      } catch (LineUnavailableException e) {
+//        e.printStackTrace();
+//      }
     }
 
     @Override

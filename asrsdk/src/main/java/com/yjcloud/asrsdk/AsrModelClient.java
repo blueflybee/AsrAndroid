@@ -65,6 +65,7 @@ public class AsrModelClient {
    */
   public ResultInfoVO createModel(String text) throws Exception {
     String id = new18uid();
+    System.out.println("id = " + id);
     return createOrModify(id, UrlConcatUtils.concat(modelUrl, SUBMIT_URL_SUFFIX), text);
   }
 
@@ -88,6 +89,7 @@ public class AsrModelClient {
     if (response.getCode() == 200) {
       String json = response.getMsg();
       ResultInfoVO rs = JSONUtil.json2obj(json, ResultInfoVO.class);
+      Log.d(TAG, rs.toString());
       if (rs.isOK()) {
         rs.setId(id);
       }

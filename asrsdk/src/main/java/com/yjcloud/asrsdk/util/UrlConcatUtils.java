@@ -1,5 +1,7 @@
 package com.yjcloud.asrsdk.util;
 
+import android.text.TextUtils;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.Map;
@@ -26,7 +28,7 @@ public class UrlConcatUtils {
       throws UnsupportedEncodingException {
     StringBuilder sbUrl = new StringBuilder();
     sbUrl.append(host);
-    if (!StringUtil.isNullOrEmpty(path)) {
+    if (!TextUtils.isEmpty(path)) {
       sbUrl.append(path);
     }
     if (null != querys) {
@@ -35,12 +37,12 @@ public class UrlConcatUtils {
         if (0 < sbQuery.length()) {
           sbQuery.append("&");
         }
-        if ((StringUtil.isNullOrEmpty((String) query.getKey())) && (!StringUtil.isNullOrEmpty((String) query.getValue()))) {
+        if ((TextUtils.isEmpty((String) query.getKey())) && (!TextUtils.isEmpty((String) query.getValue()))) {
           sbQuery.append((String) query.getValue());
         }
-        if (!StringUtil.isNullOrEmpty((String) query.getKey())) {
+        if (!TextUtils.isEmpty((String) query.getKey())) {
           sbQuery.append((String) query.getKey());
-          if (!StringUtil.isNullOrEmpty((String) query.getValue())) {
+          if (!TextUtils.isEmpty((String) query.getValue())) {
             sbQuery.append("=");
             sbQuery.append(URLEncoder.encode((String) query.getValue(), "UTF-8"));
           }

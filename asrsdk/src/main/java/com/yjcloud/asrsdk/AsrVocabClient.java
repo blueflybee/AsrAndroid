@@ -54,6 +54,7 @@ public class AsrVocabClient {
    */
   public ResultInfoVO createVocab(List<String> words) throws Exception {
     String id = new18uid();
+    System.out.println("id = " + id);
     return createOrModify(id, words, UrlConcatUtils.concat(vocabUrl, CREATE_URL_SUFFIX));
   }
 
@@ -77,6 +78,7 @@ public class AsrVocabClient {
     if (response.getCode() == 200) {
       String json = response.getMsg();
       ResultInfoVO rs = JSONUtil.json2obj(json, ResultInfoVO.class);
+      Log.d(TAG, rs.toString());
       if (rs.isOK()) {
         rs.setId(id);
       }
