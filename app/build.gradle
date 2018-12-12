@@ -17,10 +17,21 @@ android {
         }
     }
 
-//    applicationVariants.all { variant->
-//
-//        println "variant = $variant.name"
-//    }
+    //自定义apk名称
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->  // each 改为 all
+            println "output.outputFile.name = $output.outputFile."
+            def outFile = output.outputFile
+            if (outFile != null && outFile.name.endsWith('.apk')) {
+                outputFileName = project.name + "-" + variant.name + "-" + variant.versionName + ".apk"
+                //  output.outputFile 改为 outputFileName
+            }
+        }
+    }
+
+
+
+
 
     lintOptions {
         abortOnError false
