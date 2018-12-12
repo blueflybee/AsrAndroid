@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">AsrAndroid</string>
+    <string name="asr_test">asr test</string>
 </resources>

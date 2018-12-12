@@ -1,12 +1,16 @@
 package com.yjcloud.asrandroid;
 
+import android.content.Context;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
 import com.yjcloud.asrsdk.demo.AsrDemoV1_2;
+
+import java.lang.ref.WeakReference;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,13 +24,24 @@ public class MainActivity extends AppCompatActivity {
     button.setOnClickListener(new View.OnClickListener() {
       @Override
       public void onClick(View v) {
-        new AsrTask().execute();
+        new AsrTask(getContext()).execute();
       }
     });
 
   }
 
-  private class AsrTask extends AsyncTask<Object, Object, Object> {
+  @NonNull
+  private MainActivity getContext() {
+    return MainActivity.this;
+  }
+
+  private static class AsrTask extends AsyncTask<Object, Object, Object> {
+
+    private WeakReference<Context> mContextWeakReference;
+
+    public AsrTask(Context context) {
+      mContextWeakReference = new WeakReference<>(context);
+    }
 
     @Override
     protected Object doInBackground(Object... objects) {
@@ -50,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
         demo.start();
 
         //开始发送音频
-        demo.process(MainActivity.this);
+        demo.process(mContextWeakReference.get());
 
 //          while (true) {
 //            Thread.sleep(10);
