@@ -32,19 +32,19 @@ public class MainActivity extends AppCompatActivity {
     protected Object doInBackground(Object... objects) {
       try {
         AsrDemoV1_2 demo = new AsrDemoV1_2();
-//        String vocabId = demo.generateVocabId();
-//        System.out.println("vocabId = " + vocabId);
-//        String classVocabId = demo.generateCVocabId();
-//        System.out.println("classVocabId = " + classVocabId);
-//        String modelId = demo.generateModelId();
-//        System.out.println("modelId = " + modelId);
+        String vocabId = demo.generateVocabId();
+        System.out.println("vocabId = " + vocabId);
+        String classVocabId = demo.generateCVocabId();
+        System.out.println("classVocabId = " + classVocabId);
+        String modelId = demo.generateModelId();
+        System.out.println("modelId = " + modelId);
 
         //初始化,并传入热词以及模型
         //V_b3a8639f6694a0fe
         //C_ba9483e0d640ef98
         //M_9d58deed730b3e46
 //        demo.init("V_b3a8639f6694a0fe", "C_ba9483e0d640ef98", "M_9d58deed730b3e46");
-        demo.init(null, null, null);
+        demo.init(vocabId, classVocabId, modelId);
 
         //开始
         demo.start();

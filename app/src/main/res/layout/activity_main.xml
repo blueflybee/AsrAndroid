@@ -11,6 +11,6 @@
         android:id="@+id/btn_asr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="asr"/>
+        android:text="asr test"/>
 
 </LinearLayout>
