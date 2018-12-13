@@ -24,7 +24,6 @@ android {
         abortOnError false
     }
 
-    //主要是下面这一段
     android.libraryVariants.all { variant ->
         variant.outputs.all {
             outputFileName = project.name + "-" + variant.name + "-" + defaultConfig.versionName + ".aar"

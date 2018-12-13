@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.yjcloud.asrsdk.demo.AsrDemoV1_2;
+import com.yjcloud.asrsdk.demo.OpenInfo;
 
 import java.lang.ref.WeakReference;
 
@@ -46,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected Object doInBackground(Object... objects) {
       try {
+        OpenInfo.setHost("http://192.168.101.201:8882/asr-sdk-server/api/v1/");
         AsrDemoV1_2 demo = new AsrDemoV1_2();
         String vocabId = demo.generateVocabId();
         System.out.println("vocabId = " + vocabId);
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         //V_b3a8639f6694a0fe
         //C_ba9483e0d640ef98
         //M_9d58deed730b3e46
-//        demo.init("V_b3a8639f6694a0fe", "C_ba9483e0d640ef98", "M_9d58deed730b3e46");
+//        demo.init(null, null, null);
         demo.init(vocabId, classVocabId, modelId);
 
         //开始
@@ -66,10 +68,6 @@ public class MainActivity extends AppCompatActivity {
 
         //开始发送音频
         demo.process(mContextWeakReference.get());
-
-//          while (true) {
-//            Thread.sleep(10);
-//          }
 
       } catch (Exception e) {
         e.printStackTrace();
