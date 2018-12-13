@@ -25,7 +25,8 @@ android {
     }
 
     android.libraryVariants.all { variant ->
-        variant.outputs.all {
+        variant.outputs.all {output ->
+            println "it = $output.outputFile"
             outputFileName = project.name + "-" + variant.name + "-" + defaultConfig.versionName + ".aar"
         }
     }
